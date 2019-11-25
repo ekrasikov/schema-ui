@@ -7,20 +7,24 @@
                 <button class="delete" aria-label="close" @click="$emit('close')"></button>
             </header>
             <section class="modal-card-body">
-                <table class="table is-hoverable is-fullwidth">
-                    <thead>
-                    <tr>
-                        <th>event_type</th>
-                        <th>event_version</th>
-                        <th>json_schema</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <td><input class="input" type="text" placeholder="player_death" v-model="event_type"></td>
-                        <td><input class="input" type="text" placeholder="v1.0" v-model="event_version"></td>
-                        <td><input class="input" type="text" placeholder="{schema: here}" v-model="json_schema"></td>
-                    </tbody>
-                </table>
+                <div class="field">
+                    <label class="label">event_type</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="player_death" v-model="event_type">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">event_version</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="v1.0" v-model="event_version">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">event_type</label>
+                    <div class="control">
+                        <textarea class="textarea" placeholder="{schema: here}" v-model="json_schema"></textarea>
+                    </div>
+                </div>
             </section>
             <footer class="modal-card-foot">
                 <button class="button is-success"

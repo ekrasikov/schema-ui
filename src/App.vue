@@ -2,13 +2,15 @@
   <div id="app">
     <!-- change this div to a nice card with header and footer -->
     <div class="container is-fluid">
-      <button class="button is-small" @click="this.loadEvents" style="float: right;">
+      <br>
+      <button class="button is-small is-light" @click="this.loadEvents" style="float: right;">
         <span class="icon">
           ↻
         </span>
       </button>
       <events-list v-bind:events="state.events"/>
-      <button class="button" @click="showEventsAdd = true">Add event</button>
+      <br>
+      <button class="button is-link" @click="showEventsAdd = true">Add event</button>
       <events-add v-if="showEventsAdd" @close="showEventsAdd = false" @save="this.saveEvent"/>
     </div>
   </div>
