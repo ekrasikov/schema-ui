@@ -1,14 +1,23 @@
 <template>
   <div id="app">
+    <!-- change this div to a nice card with header and footer -->
     <div class="container is-fluid">
+      <button class="button is-small" @click="this.loadEvents" style="float: right;">
+        <span class="icon">
+          ↻
+        </span>
+      </button>
       <events-list v-bind:events="state.events"/>
+      <button class="button" @click="showEventsAdd = true">Add event</button>
+      <events-add v-if="showEventsAdd" @close="showEventsAdd = false" @save="this.saveEvent"/>
     </div>
   </div>
 </template>
 
 <script>
 import EventsList from './components/EventsList.vue'
-import { docClient } from './utils/config.js'
+import EventsAdd from './components/EventsAdd.vue'
+import { docClient, tableName } from './utils/config.js'
 
 // global state 
 var store = {
@@ -33,11 +42,14 @@ var store = {
 export default {
   name: 'app',
   components: {
-    EventsList
+    EventsList,
+    EventsAdd
   },
   data() {
     return {
-      state: store.state
+      state: store.state,
+      // whether to show EventsAdd modal
+      showEventsAdd: false
     }
   },
   mounted() {
@@ -58,8 +70,11 @@ export default {
 
       console.log("Loading events...")
 
+      // zero existing events
+      store.setEvents([])
+
       var params = {
-        TableName: process.env.VUE_APP_TABLE_NAME
+        TableName: tableName
       }
 
       docClient.scan(params, onScan)
@@ -80,6 +95,24 @@ export default {
           }   
         }
       }
+    },
+    saveEvent(event) {
+      console.log("Saving event to DynamoDB...")
+      console.log(event)
+
+      var params = {
+        TableName: tableName,
+        Item: event
+      }
+
+      docClient.put(params, (err) => {
+        if (err) {
+          console.log("Unable to save data to a database: " + "\n" + JSON.stringify(err, undefined, 2))
+        } else {
+          console.log("Successfully saved")
+          this.loadEvents()
+        }
+      })
     }
   }
 }

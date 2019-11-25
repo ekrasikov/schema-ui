@@ -9,3 +9,6 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 
 // DynamoDB client
 export const docClient = new AWS.DynamoDB.DocumentClient();
+
+// DynamoDB table name
+export const tableName = process.env.VUE_APP_TABLE_NAME

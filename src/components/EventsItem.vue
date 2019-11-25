@@ -2,7 +2,7 @@
     <tr v-on:click="triggerTruncated()">
         <td>{{ event_type }}</td>
         <td>{{ event_version }}</td>
-        <td style="width: 5000px;">{{ json_schema_display }}</td>
+        <td>{{ json_schema_display }}</td>
     </tr>
 </template>
 
@@ -25,7 +25,7 @@ export default {
       // Display json_schema truncated if needed
       json_schema_display() {
         let json_schema_str = JSON.stringify(this.json_schema)
-        if (!this.truncated || this.json_schema.length <= this.truncate_length) {
+        if (!this.truncated || JSON.stringify(this.json_schema).length <= this.truncate_length) {
             return json_schema_str
         }
         return json_schema_str.slice(0, this.truncate_length) + '...'
