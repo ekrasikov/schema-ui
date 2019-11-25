@@ -2,13 +2,25 @@
     <tr v-on:click="triggerTruncated()">
         <td>{{ event_type }}</td>
         <td>{{ event_version }}</td>
-        <td>{{ json_schema_display }}</td>
+        <td>
+            <div v-if="truncated">{{ json_schema_truncated }}</div>
+            <vue-json-pretty
+                v-else
+                :data="json_schema"
+                :showLine="true">
+            </vue-json-pretty>
+        </td>
     </tr>
 </template>
 
 <script>
 
+import VueJsonPretty from 'vue-json-pretty'
+
 export default {
+  components: {
+    VueJsonPretty
+  },
   name: 'EventsItem',
   props: {
     event_type: String,
@@ -23,12 +35,13 @@ export default {
   },
   computed: {
       // Display json_schema truncated if needed
-      json_schema_display() {
+      json_schema_truncated() {
         let json_schema_str = JSON.stringify(this.json_schema)
-        if (!this.truncated || JSON.stringify(this.json_schema).length <= this.truncate_length) {
+        if (json_schema_str.length <= this.truncate_length) {
             return json_schema_str
-        }
-        return json_schema_str.slice(0, this.truncate_length) + '...'
+        } else {
+            return json_schema_str.slice(0, this.truncate_length) + '...'
+        } 
       }
   },
   methods: {
