@@ -13,7 +13,7 @@ export default {
   props: {
     event_type: String,
     event_version: String,
-    json_schema: String
+    json_schema: Object
   },
   data() {
       return {
@@ -24,10 +24,11 @@ export default {
   computed: {
       // Display json_schema truncated if needed
       json_schema_display() {
+        let json_schema_str = JSON.stringify(this.json_schema)
         if (!this.truncated || this.json_schema.length <= this.truncate_length) {
-            return this.json_schema
+            return json_schema_str
         }
-        return this.json_schema.slice(0, this.truncate_length) + '...'
+        return json_schema_str.slice(0, this.truncate_length) + '...'
       }
   },
   methods: {
