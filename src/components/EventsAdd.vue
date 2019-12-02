@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="field">
-                    <label class="label">event_type</label>
+                    <label class="label">json_schema</label>
                     <div class="control">
                         <textarea class="textarea" v-bind:class="{ 'is-danger': $v.json_schema.$error }"
                                   placeholder="{schema: here}" v-model="$v.json_schema.$model"></textarea>
