@@ -10,28 +10,28 @@
                 <div class="field">
                     <label class="label">event_type</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="player_death" v-model="event_type">
+                        <input class="input" v-bind:class="{ 'is-danger': $v.event_type.$error }" 
+                               type="text" placeholder="player_death" v-model="$v.event_type.$model">
                     </div>
                 </div>
                 <div class="field">
                     <label class="label">event_version</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="v1.0" v-model="event_version">
+                        <input class="input" v-bind:class="{ 'is-danger': $v.event_version.$error }" 
+                               type="text" placeholder="v1.0" v-model="$v.event_version.$model">
                     </div>
                 </div>
                 <div class="field">
                     <label class="label">event_type</label>
                     <div class="control">
-                        <textarea class="textarea" placeholder="{schema: here}" v-model="json_schema"></textarea>
+                        <textarea class="textarea" v-bind:class="{ 'is-danger': $v.json_schema.$error }"
+                                  placeholder="{schema: here}" v-model="$v.json_schema.$model"></textarea>
                     </div>
                 </div>
             </section>
             <footer class="modal-card-foot">
                 <button class="button is-success"
-                    @click="function () {
-                        $emit('close')
-                        $emit('save', event)
-                    }">
+                    @click="this.submit">
                     Save changes
                 </button>
                 <button class="button" @click="$emit('close')">Cancel</button>
@@ -41,6 +41,19 @@
 </template>
 
 <script>
+
+import { required } from 'vuelidate/lib/validators'
+
+// custom validator to check JSON,
+// currently just for validity, potentially also for some fields
+const mustBeValidJSON = (value) => {
+    try {
+        JSON.parse(value);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
 
 export default {
   name: 'EventsAdd',
@@ -53,6 +66,18 @@ export default {
         json_schema: ""
       }
   },
+  validations: {
+    event_type: {
+        required
+    },
+    event_version: {
+        required
+    },
+    json_schema: {
+        required,
+        mustBeValidJSON
+    }
+  },
   computed: {
     event() {
         let event = {}
@@ -64,7 +89,17 @@ export default {
     }
   },
   methods: {
-      
+    submit() {
+        console.log('submitting...')
+        this.$v.$touch()
+        // check for validation errors
+        if (this.$v.$invalid) {
+            console.log('validation error')
+        } else {
+            this.$emit('close')
+            this.$emit('save', this.event)
+        }
+    }
   }
 }
 </script>
