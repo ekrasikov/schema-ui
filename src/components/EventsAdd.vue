@@ -83,15 +83,18 @@ export default {
         let event = {}
         event.event_type = this.event_type
         event.event_version = this.event_version
+        console.log("json_schema is: " + this.json_schema)
         event.json_schema = JSON.parse(this.json_schema)
         return event
     }
   },
   methods: {
     submit() {
+        console.log('submitting...')
         this.$v.$touch()
         // check for validation errors
         if (this.$v.$invalid) {
+            console.log('validation error')
         } else {
             this.$emit('close')
             this.$emit('save', this.event)
