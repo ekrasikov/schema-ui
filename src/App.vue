@@ -70,8 +70,6 @@ export default {
     loadEvents() {
       // load events from DynamoDB
 
-      console.log("Loading events...")
-
       // zero existing events
       store.setEvents([])
 
@@ -83,9 +81,7 @@ export default {
 
       function onScan(err, data) {
         if (err) {
-          console.log("Can't load data from DynamoDB table")
         } else {
-          console.log("Successfully loaded from DynamoDB")
 
           // add loaded events to global store
           store.addEvents(data.Items)
@@ -99,8 +95,6 @@ export default {
       }
     },
     saveEvent(event) {
-      console.log("Saving event to DynamoDB...")
-      console.log(event)
 
       var params = {
         TableName: tableName,
@@ -109,9 +103,7 @@ export default {
 
       docClient.put(params, (err) => {
         if (err) {
-          console.log("Unable to save data to a database: " + "\n" + JSON.stringify(err, undefined, 2))
         } else {
-          console.log("Successfully saved")
           this.loadEvents()
         }
       })
