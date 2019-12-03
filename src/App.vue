@@ -79,6 +79,8 @@ export default {
         TableName: tableName
       }
 
+      console.log(params.TableName)
+
       docClient.scan(params, onScan)
 
       function onScan(err, data) {
